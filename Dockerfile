@@ -27,4 +27,4 @@ RUN apk update \
 RUN chmod +x entrypoint.sh
 
 VOLUME ["/app/config", "/app/media"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
