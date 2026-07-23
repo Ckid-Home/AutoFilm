@@ -1,5 +1,3 @@
-[license]: /LICENSE
-[license-badge]: https://img.shields.io/github/license/AkimioJR/AutoFilm?style=flat-square&a=1
 [prs]: https://github.com/AkimioJR/AutoFilm
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [issues]: https://github.com/AkimioJR/AutoFilm/issues/new
@@ -13,9 +11,8 @@
 
 # AutoFilm
 
-**一个为 Emby、Jellyfin 服务器提供直链播放的小项目** 
+**一个为Emby、Jellyfin提供生成strm、动漫追番、绘制媒体库海报的小工具** 
 
-[![license][license-badge]][license]
 [![prs][prs-badge]][prs]
 [![issues][issues-badge]][issues]
 [![release][release-badge]][release]
@@ -38,12 +35,19 @@
 # 部署方式
 1. Docker 运行
     ```bash
-    docker run -d --name autofilm  -v ./config:/config -v ./media:/media -v ./logs:/logs akimio/autofilm
+    docker run -d --name autofilm \
+      -v ./config:/config \
+      -v ./media:/media \
+      -v ./logs:/logs \
+      -v ./fonts:/fonts \
+      akimio/autofilm:latest
     ```
-2. Python 环境运行（Python3.13）
+2. 二进制运行
     ```bash
-    python app/main.py
+    ./autofilm --config /path/to/config.yaml
     ```
+
+完整配置结构见 [`config/config.example.yaml`](./config/config.example.yaml)。
 
 # Strm文件优点
 - [x] 轻量化 Emby 服务器，降低 Emby 服务器的性能需求以及硬盘需求
@@ -97,6 +101,7 @@
 </table>
 
 # 更新日志
+- 2026.7.23: v2.0.0，使用 rust 重构 AutoFilm，大幅度提高性能降低内存占用，**配置文件变化较大，需要重新配置**
 - 2026.6.3：v1.5.1，Alist2Strm 新增 public_url 支持内外网地址分离；新增 .strm 智能保护防止大量误删；重构 HTTP 客户端设计；更新 Docker Python 版本与 Pillow 依赖；更新项目相关链接
 - 2025.9.26：v1.5.0，支持 BDMV 蓝光原盘文件结构，引入 Alist2StrmMode 枚举以简化模式管理，优化 LibraryPoster 对多路径媒体库的处理
 - 2025.7.14：v1.4.0，修复 Ani2Alist 模块时间解析问题，新增 LibraryPoster 美化媒体库封面模块
