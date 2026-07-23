@@ -7,16 +7,16 @@ repository = "https://github.com/AkimioJR/AutoFilm"
 description = "一个为Emby、Jellyfin提供生成strm、动漫追番、绘制媒体库海报的小工具"
 
 [dependencies]
-clap = { version = "4.5.51", features = ["derive"] }
-serde = { version = "1.0.228", features = ["derive"] }
-serde_json = "1.0.150"
+clap = { version = "4.6.4", features = ["derive"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
 serde_yaml = "0.9.34"
 alist = { package = "alist-client-rs", path = "alist-client-rs" }
 ab_glyph = "0.2.32"
 base64 = "0.22.1"
 chrono = "0.4.45"
 chrono-tz = "0.10"
-futures-util = "0.3.32"
+futures-util = "0.3.33"
 iana-time-zone = "0.1"
 image = { version = "0.25.8", default-features = false, features = [
     "gif",
@@ -25,8 +25,8 @@ image = { version = "0.25.8", default-features = false, features = [
     "webp",
 ] }
 imageproc = "0.27.0"
-rand = "0.10.1"
-regex = "1.12.4"
+rand = "0.10.2"
+regex = "1.13.1"
 reqwest = { version = "0.13.4", default-features = false, features = [
     "http2",
     "json",
@@ -34,8 +34,8 @@ reqwest = { version = "0.13.4", default-features = false, features = [
     "rustls",
     "stream",
 ] }
-thiserror = "2.0.18"
-tokio = { version = "1.52.3", features = [
+thiserror = "2.0.19"
+tokio = { version = "1.53.1", features = [
     "fs",
     "io-util",
     "macros",
