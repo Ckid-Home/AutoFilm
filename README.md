@@ -32,18 +32,13 @@
 # 说明文档
 详情见 [AutoFilm 说明文档](https://blog.akimio.top/posts/1031/)
 
-# 部署方式
-1. Docker 运行
-    ```bash
-    docker run -d --name autofilm \
-      -v ./config:/config \
-      -v ./media:/media \
-      -v ./logs:/logs \
-      -v ./fonts:/fonts \
-      akimio/autofilm:latest
-    ```
+# 运行方式
+1. Docker 运行（**推荐**）
+   见[docker-compose.yaml](docker/compose.yaml)
+
 2. 二进制运行
     ```bash
+    ./autofilm --help # 可选，查看具体使用说明
     ./autofilm --config /path/to/config.yaml
     ```
 
