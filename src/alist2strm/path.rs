@@ -65,7 +65,9 @@ impl AlistPath {
     ///
     /// 该链接遵循 Python 版本的规则：站点地址 + `/d` + 用户 `base_path` +
     /// 远端完整路径，并在存在签名时附加 `sign` 查询参数。路径组件会做 URL
-    /// 编码，确保中文和空格等字符可用于 `.strm` 内容或伴生文件下载。
+    /// 编码，确保中文和空格等字符可用于 `.strm` 内容或伴生文件下载。签名值
+    /// 不做编码，直接追加，避免 `=` 和 `:` 等字符被百分编码后导致 AList
+    /// 服务端验签失败。
     pub fn download_url(&self) -> String {
         // Python 版本的下载链接规则是：server + "/d" + base_path + full_path + sign。
         let abs_path = format!(
@@ -80,7 +82,7 @@ impl AlistPath {
         );
         if !self.sign.is_empty() {
             url.push_str("?sign=");
-            url.push_str(&urlencoding::encode(&self.sign));
+            url.push_str(&self.sign);
         }
         url
     }
@@ -241,5 +243,42 @@ mod tests {
         };
         assert_eq!(bdmv_root(&path).as_deref(), Some("/电影/Example"));
         assert_eq!(movie_title_from_bdmv_root("/电影/Example"), "Example");
+    }
+
+    #[test]
+    fn download_url_does_not_encode_sign() {
+        let path = AlistPath {
+            server_url: "http://192.168.10.15:5255".into(),
+            base_path: String::new(),
+            full_path: "/media/movie.mkv".into(),
+            name: "movie.mkv".into(),
+            size: 1024,
+            is_dir: false,
+            modified_timestamp: 0,
+            sign: "SGzogi30rKyG5MVNVuwREmRYhE4iDlKcIGIGqpR1m9c=:0".into(),
+            raw_url: None,
+        };
+        let url = path.download_url();
+        assert_eq!(
+            url,
+            "http://192.168.10.15:5255/d/media/movie.mkv?sign=SGzogi30rKyG5MVNVuwREmRYhE4iDlKcIGIGqpR1m9c=:0"
+        );
+    }
+
+    #[test]
+    fn download_url_without_sign_has_no_query() {
+        let path = AlistPath {
+            server_url: "http://192.168.10.15:5255".into(),
+            base_path: String::new(),
+            full_path: "/media/movie.mkv".into(),
+            name: "movie.mkv".into(),
+            size: 1024,
+            is_dir: false,
+            modified_timestamp: 0,
+            sign: String::new(),
+            raw_url: None,
+        };
+        let url = path.download_url();
+        assert_eq!(url, "http://192.168.10.15:5255/d/media/movie.mkv");
     }
 }
