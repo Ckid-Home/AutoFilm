@@ -1,33 +1,37 @@
 use serde::Serialize;
+use std::sync::LazyLock;
 
 #[derive(Debug, Serialize)]
 pub struct ApplicationInfo {
-    pub app_name: &'static str,
-    pub app_version: &'static str,
-    pub description: &'static str,
-    pub authors: &'static str,
-    pub repository: &'static str,
-    pub rustc_version: &'static str,
-    pub git_commit: &'static str,
-    pub git_branch: &'static str,
-    pub build_time: &'static str,
-    pub build_target: &'static str,
-    pub build_profile: &'static str,
+    pub app_name: String,
+    pub app_version: String,
+    pub description: String,
+    pub authors: Vec<String>,
+    pub repository: String,
+    pub rustc_version: String,
+    pub git_commit: String,
+    pub git_branch: String,
+    pub build_time: String,
+    pub build_target: String,
+    pub build_profile: String,
 }
 
-pub static APPLICATION_INFO: ApplicationInfo = ApplicationInfo {
-    app_name: "AutoFilm",
-    app_version: concat!("v", env!("CARGO_PKG_VERSION")),
-    description: env!("CARGO_PKG_DESCRIPTION"),
-    authors: env!("CARGO_PKG_AUTHORS"),
-    repository: env!("CARGO_PKG_REPOSITORY"),
-    rustc_version: env!("AUTOFILM_RUSTC_VERSION"),
-    git_commit: env!("AUTOFILM_GIT_COMMIT"),
-    git_branch: env!("AUTOFILM_GIT_BRANCH"),
-    build_time: env!("AUTOFILM_BUILD_TIME"),
-    build_target: env!("AUTOFILM_BUILD_TARGET"),
-    build_profile: env!("AUTOFILM_BUILD_PROFILE"),
-};
+pub static APPLICATION_INFO: LazyLock<ApplicationInfo> = LazyLock::new(|| ApplicationInfo {
+    app_name: "AutoFilm".into(),
+    app_version: format!("v{}", env!("CARGO_PKG_VERSION")),
+    description: env!("CARGO_PKG_DESCRIPTION").into(),
+    authors: env!("CARGO_PKG_AUTHORS")
+        .split(':')
+        .map(|s| s.trim().into())
+        .collect(),
+    repository: env!("CARGO_PKG_REPOSITORY").into(),
+    rustc_version: env!("AUTOFILM_RUSTC_VERSION").into(),
+    git_commit: env!("AUTOFILM_GIT_COMMIT").into(),
+    git_branch: env!("AUTOFILM_GIT_BRANCH").into(),
+    build_time: env!("AUTOFILM_BUILD_TIME").into(),
+    build_target: env!("AUTOFILM_BUILD_TARGET").into(),
+    build_profile: env!("AUTOFILM_BUILD_PROFILE").into(),
+});
 
 pub const LOGO: &str = concat!(
     " █████╗ ██╗   ██╗████████╗ ██████╗ ███████╗██╗██╗     ███╗   ███╗\n",

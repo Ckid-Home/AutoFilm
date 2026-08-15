@@ -1,4 +1,3 @@
-use crate::app_info;
 use chrono_tz::Tz;
 use clap::Parser;
 
@@ -6,7 +5,7 @@ use std::path::PathBuf;
 
 #[derive(Debug, Parser)]
 #[command(
-    name = app_info::APPLICATION_INFO.app_name,
+    name = env!("CARGO_PKG_NAME"),
     disable_version_flag = true
 )]
 pub struct CliArgs {

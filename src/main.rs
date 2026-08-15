@@ -21,7 +21,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     app_info::print_banner();
 
     if args.show_version {
-        let version_info = serde_json::to_string_pretty(&app_info::APPLICATION_INFO)?;
+        let version_info = serde_json::to_string_pretty(&*app_info::APPLICATION_INFO)?;
         println!("{version_info}");
         return Ok(());
     }
